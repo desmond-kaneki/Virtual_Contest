@@ -27,38 +27,27 @@ export class ContestList extends Component {
         }
         if(this.state.username!==names)
         {
-            //console.log(this.props.name+' '!==this.props.name+' ')
             this.setState({
                 username : names,
             })
             names = names.split(',');
-            var submission = new Set(),zz=0;
+            var sub = new Set();
             for(var k=0;k<names.length;k++)
             {
-                
                 fetch(url+names[k])
                     .then(response => response.json())
                     .then(data =>{
-                        submission = this.state.submission;
+                        sub = this.state.submission;
                         for(var id=0;id<data.result.length;id++)
                         {
-                            zz++;
-                            console.log(data.result[id]['problem']['contestId']);
-                            submission.push(data.result[id]['problem']['contestId']);
+                            sub.push(data.result[id]['problem']['contestId']);
                         }
-                        submission = [...new Set(submission)];
+                        sub = [...new Set(sub)];
                         this.setState({
-                            submission : submission
+                            submission : sub
                         })
-                        console.log(this.state.submission.length);
                     });
-                /*this.setState({
-                    submission : submission,
-                })*/
             }
-            //console.log(this.state.submission.length); 
-            //console.log(zz);
-            console.log('Component Updated');
         }
     }
     componentDidMount()
@@ -74,7 +63,6 @@ export class ContestList extends Component {
         fetch(url+names[0])
             .then(response => response.json())
             .then(data => this.setState({submission : data.result}));
-        console.log('Component Mounted');
     }
     zeroPad = (num, places) => String(num).padStart(places, '0')
     render() {
@@ -109,7 +97,6 @@ export class ContestList extends Component {
                     contest[id]=false;
                 }
             }
-            //console.log(zz);
             for(let value of previous)
             {
                 if(contest[value.id]===true)
